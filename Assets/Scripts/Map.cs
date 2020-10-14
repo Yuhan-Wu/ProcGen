@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class Map : MonoBehaviour
 {
-   
+    public List<Room> Rooms = new List<Room>();
 }

@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public char Type;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Vector2Int RoomPosition;
+    public Room ParentRoom;
 }

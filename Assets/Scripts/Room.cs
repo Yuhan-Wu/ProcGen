@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Vector2Int MapPosition;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [TextArea]
+    public string StringRoom;
+
+    public List<Tile> Tiles = new List<Tile>();
+    public List<Door> Doors = new List<Door>();
+
+    public bool isVictory = false;
 }

@@ -121,6 +121,86 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &219147912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 219147914}
+  - component: {fileID: 219147913}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &219147913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219147912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b0a842ba5a22a4f9e7aab1c6066ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxDepth: 5
+  Seed: 0
+  MaxTries: 100
+  VictoryColor: {r: 0.990566, g: 0.7242346, b: 0.7242346, a: 1}
+  StartColor: {r: 0.9453429, g: 0.9716981, b: 0.6004361, a: 1}
+  RoomTexts:
+  - {fileID: 4900000, guid: d91795197a40bd34093474e742c23707, type: 3}
+  - {fileID: 4900000, guid: 68397afa36c987b419e759f522a6e986, type: 3}
+  - {fileID: 4900000, guid: 211b225d6b184ac468f7ffa564932521, type: 3}
+  - {fileID: 4900000, guid: cac2c7b826b1bed4f8bc900ab7e31005, type: 3}
+  - {fileID: 4900000, guid: be01a6f514723f048b2b9e44a61d5213, type: 3}
+  - {fileID: 4900000, guid: 513b47bcdebc0ad46b0448eb1f17b094, type: 3}
+  - {fileID: 4900000, guid: 29f8440e99c868d4480fd8c718974779, type: 3}
+  - {fileID: 4900000, guid: 78242ecc56b73c64db3777761bdafa1c, type: 3}
+  - {fileID: 4900000, guid: 5b29d2472bf2aed4088208b1fda429ea, type: 3}
+  - {fileID: 4900000, guid: bcbf6226ca2188442bb29f7db5b17d69, type: 3}
+  - {fileID: 4900000, guid: 7ef22a6b014402248a443f5fc256c046, type: 3}
+  - {fileID: 4900000, guid: 1398d9a6801ef0644ab4cbb6d13afcf9, type: 3}
+  - {fileID: 4900000, guid: 70a835503077a1c4aabee3f2cc344173, type: 3}
+  - {fileID: 4900000, guid: 2bf12e26a6690684f9853b67bbc61114, type: 3}
+  TileTypes:
+  - Name: 87
+    TileObject: {fileID: 1996199444327545849, guid: cc0982cab5559f4479f2c5cac825b441,
+      type: 3}
+  - Name: 48
+    TileObject: {fileID: 3555428332736650773, guid: 5063eea2a24ec0b4ab8acd3ac8142fa0,
+      type: 3}
+  - Name: 66
+    TileObject: {fileID: 3317701986320494120, guid: c72f70bb64815a24f99e0c9e45727711,
+      type: 3}
+  - Name: 72
+    TileObject: {fileID: 5001651525758155753, guid: ec7734f4acc47d54e806b0b44e233d61,
+      type: 3}
+  - Name: 49
+    TileObject: {fileID: 5887606402207471099, guid: 4867f66bb84b97540befbd2f217f661e,
+      type: 3}
+  GameMap: {fileID: 0}
+--- !u!4 &219147914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219147912}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.6139107, y: 0.33817327, z: -2.9775836}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
