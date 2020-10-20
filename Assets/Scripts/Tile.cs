@@ -8,4 +8,6 @@ public class Tile : MonoBehaviour
 
     public Vector2Int RoomPosition;
     public Room ParentRoom;
+
+    public bool IsFloorTile => Type == 'W';
 }

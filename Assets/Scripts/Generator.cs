@@ -10,7 +10,6 @@ public class Generator : MonoBehaviour
     public int Seed = 0;
     public int MaxTries = 100;
     public Color VictoryColor;
-    public Color StartColor;
 
     public List<TextAsset> RoomTexts = new List<TextAsset>();
     public List<TileType> TileTypes = new List<TileType>();
@@ -27,12 +26,7 @@ public class Generator : MonoBehaviour
         public Tile TileObject;
     }
 
-    private void Start()
-    {
-        Generate();
-    }
-
-    public void Generate()
+    public Map Generate()
     {
         if (Seed != 0)
         {
@@ -44,13 +38,11 @@ public class Generator : MonoBehaviour
 
         string strRoom = RoomTexts[0].text;
         Room startRoom = GenerateRoom(strRoom, Vector2Int.zero);
-        foreach (Tile tile in startRoom.Tiles)
-        {
-            tile.GetComponentInChildren<SpriteRenderer>().color = StartColor;
-        }
 
         GenerateConnectedRoom(startRoom, 1);
         RemoveUnconnectedDoors();
+
+        return GameMap;
     }
 
     private Room GenerateRoom(string p_RoomText, Vector2Int p_MapPosition)
