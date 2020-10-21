@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     public List<Unit> CurRoomUnits = new List<Unit>();
     public Room CurRoom;
     public Color HighlightColor;
+    public Color DefaultColor;
     public Tile HighlightTile = null;
 
     private void Start()
@@ -30,18 +31,80 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         ProcessPlayerInput();
+
     }
 
     void ProcessPlayerInput()
     {
+        Ray ray = MainCamera.ScreenPointToRay(Input.mousePosition);
+        Plane plane = new Plane(Vector3.forward, Vector3.zero);
+        float d;
+        if(plane.Raycast(ray, out d))
+        {
+            Vector3 worldPos = ray.GetPoint(d);
+            Vector3 localPos = worldPos - CurRoom.transform.position;
+            Vector2Int roomPos = new Vector2Int((int)localPos.x, (int)localPos.y);
+            Tile tile = CurRoom.GetTileAt(roomPos);
+            Highlight(tile);
 
+            if (Input.GetMouseButtonDown(0) && CanMoveTo(Player, tile))
+                MoveUnitToTile(Player, tile);
+            
+        }
+    }
+
+    bool CanMoveTo(Unit p_Unit, Tile p_Tile)
+    {
+        if (p_Tile == null || !p_Tile.IsFloorTile || p_Tile.CurUnit != null)
+        {
+            return false;
+        }
+
+        if (p_Tile.IsAdjacentTo(p_Unit.CurTile)) return true;
+        return false;
+    }
+
+    void MoveUnitToTile(Unit p_Unit, Tile p_Tile)
+    {
+        if (p_Unit.CurTile != null)
+        {
+            p_Unit.CurTile.CurUnit = null;
+        }
+
+        p_Unit.CurTile = p_Tile;
+        p_Tile.CurUnit = p_Unit;
+
+        p_Unit.transform.position = p_Tile.transform.position;
+    }
+
+    void Highlight(Tile p_Tile)
+    {
+        if (p_Tile == HighlightTile)
+        {
+            return;
+        }
+        if (HighlightTile != null)
+        {
+            HighlightTile.GetComponentInChildren<SpriteRenderer>().color = DefaultColor;
+            HighlightTile = null;
+        }
+        if (p_Tile && !p_Tile.IsFloorTile) return;
+
+        HighlightTile = p_Tile;
+        if (p_Tile != null)
+        {
+            p_Tile.GetComponentInChildren<SpriteRenderer>().color = HighlightColor;
+        }
     }
 
     void MoveToRoom(Room p_Room, Door p_Entry = null)
     {
+        // TODO
         Tile startTile = p_Entry != null ? p_Entry.OnTile : p_Room.Tiles.Find(t => t.IsFloorTile);
         CurRoom = p_Room;
         Player.transform.position = startTile.transform.position;
+        Player.CurTile = startTile;
+        startTile.CurUnit = Player;
 
         FocusCameraOnRoom(p_Room);
         

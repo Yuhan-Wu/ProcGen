@@ -246,7 +246,6 @@ MonoBehaviour:
   Seed: 0
   MaxTries: 100
   VictoryColor: {r: 0.990566, g: 0.7242346, b: 0.7242346, a: 1}
-  StartColor: {r: 0.9453429, g: 0.9716981, b: 0.6004361, a: 1}
   RoomTexts:
   - {fileID: 4900000, guid: d91795197a40bd34093474e742c23707, type: 3}
   - {fileID: 4900000, guid: 68397afa36c987b419e759f522a6e986, type: 3}
@@ -311,6 +310,9 @@ MonoBehaviour:
   Player: {fileID: 57850772}
   CurRoomUnits: []
   CurRoom: {fileID: 0}
+  HighlightColor: {r: 0.9660302, g: 0.9811321, b: 0.67105734, a: 0.3254902}
+  DefaultColor: {r: 1, g: 1, b: 1, a: 1}
+  HighlightTile: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
