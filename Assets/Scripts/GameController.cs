@@ -60,7 +60,7 @@ public class GameController : MonoBehaviour
             return false;
         }
 
-        if (p_Tile.IsAdjacentTo(p_Unit.CurTile)) return true;
+        if (p_Tile.IsAdjacentTo(p_Unit.CurTile) && !p_Tile.IsLavaTile) return true;
         return false;
     }
 
