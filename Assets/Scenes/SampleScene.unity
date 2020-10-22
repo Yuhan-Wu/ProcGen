@@ -277,6 +277,9 @@ MonoBehaviour:
   - Name: 49
     TileObject: {fileID: 5887606402207471099, guid: 4867f66bb84b97540befbd2f217f661e,
       type: 3}
+  - Name: 76
+    TileObject: {fileID: 6669836242696756323, guid: 291c1c812827d854db0ecd0b11da5bcc,
+      type: 3}
   GameMap: {fileID: 0}
 --- !u!4 &219147914
 Transform:

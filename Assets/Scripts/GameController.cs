@@ -55,26 +55,40 @@ public class GameController : MonoBehaviour
 
     bool CanMoveTo(Unit p_Unit, Tile p_Tile)
     {
-        if (p_Tile == null || !p_Tile.IsFloorTile || p_Tile.CurUnit != null)
+        if (p_Tile == null || p_Tile.IsLavaTile || !(p_Tile.IsFloorTile || p_Tile.IsDoorTile) || p_Tile.CurUnit != null)
         {
             return false;
         }
 
-        if (p_Tile.IsAdjacentTo(p_Unit.CurTile) && !p_Tile.IsLavaTile) return true;
+        if (p_Tile.IsAdjacentTo(p_Unit.CurTile)) return true;
         return false;
     }
 
     void MoveUnitToTile(Unit p_Unit, Tile p_Tile)
     {
+        Tile from = null;
         if (p_Unit.CurTile != null)
         {
+            from = p_Unit.CurTile;
             p_Unit.CurTile.CurUnit = null;
         }
 
         p_Unit.CurTile = p_Tile;
         p_Tile.CurUnit = p_Unit;
 
-        p_Unit.transform.position = p_Tile.transform.position;
+        StartCoroutine(MoveTo(p_Unit.transform, p_Tile.transform.position, 0.25f));
+
+        OnUnitEnterTile(p_Unit, p_Tile, from);
+    }
+
+    void OnUnitEnterTile(Unit p_Unit, Tile p_To, Tile p_From)
+    {
+        if(p_To.IsDoorTile)
+        {
+            Door door = p_To.GetComponent<Door>();
+            Room room = door.ConnectedDoor.OnTile.ParentRoom;
+            MoveToRoom(room, door.ConnectedDoor);
+        }
     }
 
     void Highlight(Tile p_Tile)
@@ -88,13 +102,15 @@ public class GameController : MonoBehaviour
             HighlightTile.GetComponentInChildren<SpriteRenderer>().color = DefaultColor;
             HighlightTile = null;
         }
-        if (p_Tile && !p_Tile.IsFloorTile) return;
+        if (p_Tile == null)
+        {
+            HighlightTile = p_Tile;
+            return;
+        }
+        if (!p_Tile.IsFloorTile) return;
 
         HighlightTile = p_Tile;
-        if (p_Tile != null)
-        {
-            p_Tile.GetComponentInChildren<SpriteRenderer>().color = HighlightColor;
-        }
+        p_Tile.GetComponentInChildren<SpriteRenderer>().color = HighlightColor;
     }
 
     void MoveToRoom(Room p_Room, Door p_Entry = null)
@@ -118,17 +134,34 @@ public class GameController : MonoBehaviour
 
         foreach(Tile tile in p_Room.Tiles)
         {
-            Vector3 lp = tile.transform.position;
-            if (lp.x < min.x) min.x = lp.x;
-            else max.x = lp.x;
-            if (lp.y < min.y) min.y = lp.y;
-            else max.y = lp.y;
+            if (tile)
+            {
+                Vector3 lp = tile.transform.position;
+                if (lp.x < min.x) min.x = lp.x;
+                else if(lp.x > max.x) max.x = lp.x;
+                if (lp.y < min.y) min.y = lp.y;
+                else if(lp.y > max.y) max.y = lp.y;
+            } 
         }
 
         Vector3 center = (max - min) / 2.0f + min;
-        
-        MainCamera.transform.position = new Vector3(center.x, center.y, MainCamera.transform.position.z);
+
+        StartCoroutine(MoveTo(MainCamera.transform, new Vector3(center.x, center.y, MainCamera.transform.position.z), 0.5f));
     }
 
+    IEnumerator MoveTo(Transform p_Target, Vector3 p_To, float p_Duration)
+    {
+        float time = 0;
+        Vector3 start = p_Target.position;
+        while (time <= p_Duration)
+        {
+            float t = Mathf.Clamp01(time / p_Duration);
+            p_Target.transform.position = Vector3.Lerp(start, p_To, t);
+            yield return new WaitForEndOfFrame();
+            time += Time.deltaTime;
+        }
+
+        transform.position = p_To;
+    }
    
 }

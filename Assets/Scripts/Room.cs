@@ -25,4 +25,9 @@ public class Room : MonoBehaviour
         }
         return null;
     }
+
+    public void HideRoom()
+    {
+
+    }
 }
