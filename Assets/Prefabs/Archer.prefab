@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7282598165213649083}
   - component: {fileID: 7282598165213649082}
+  - component: {fileID: 1070656946348455804}
   m_Layer: 0
   m_Name: Archer
   m_TagString: Untagged
@@ -45,10 +46,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurTile: {fileID: 0}
-  Health: 1
-  MaxHealth: 1
-  Mana: 5
-  MaxMana: 5
+  Stats:
+  - Name: Health
+    CurrentValue: 1
+    MaxValue: 1
+  Actions: []
+--- !u!114 &1070656946348455804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7282598165213649060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5bf57ed77f9c4a498f69b1c272db50c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7282598165444939502
 GameObject:
   m_ObjectHideFlags: 0

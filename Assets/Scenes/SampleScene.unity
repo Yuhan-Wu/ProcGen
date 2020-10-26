@@ -311,6 +311,8 @@ MonoBehaviour:
   GameMap: {fileID: 0}
   MainCamera: {fileID: 0}
   Player: {fileID: 57850772}
+  Warrior: {fileID: 7109853661533036533, guid: bff0a709627161240af55d1d37d0cf65, type: 3}
+  Archer: {fileID: 7282598165213649060, guid: bd35877d485a51645a138d9b4d9c0160, type: 3}
   CurRoomUnits: []
   CurRoom: {fileID: 0}
   HighlightColor: {r: 0.9660302, g: 0.9811321, b: 0.67105734, a: 0.3254902}

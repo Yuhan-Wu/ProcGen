@@ -10,12 +10,17 @@ public class GameController : MonoBehaviour
     public Camera MainCamera;
 
     public Unit Player;
+    public GameObject Warrior;
+    public GameObject Archer;
 
     public List<Unit> CurRoomUnits = new List<Unit>();
     public Room CurRoom;
     public Color HighlightColor;
     public Color DefaultColor;
     public Tile HighlightTile = null;
+
+    private bool PlayerTurn = true;
+    private List<Unit> Enemies = new List<Unit>();
 
     private void Start()
     {
@@ -30,7 +35,18 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        ProcessPlayerInput();
+        if (PlayerTurn)
+        {
+            ProcessPlayerInput();
+        }
+        else
+        {
+            foreach (Unit enemy in Enemies)
+            {
+                enemy.TakeTurn(this);
+            }
+            PlayerTurn = true;
+        }
 
     }
 
@@ -48,8 +64,11 @@ public class GameController : MonoBehaviour
             Highlight(tile);
 
             if (Input.GetMouseButtonDown(0) && CanMoveTo(Player, tile))
+            {
                 MoveUnitToTile(Player, tile);
-            
+                PlayerTurn = false;
+            }
+                
         }
     }
 
@@ -115,16 +134,50 @@ public class GameController : MonoBehaviour
 
     void MoveToRoom(Room p_Room, Door p_Entry = null)
     {
+        List<Tile> tiles = p_Room.Tiles.FindAll(t => t.IsFloorTile);
+
         // TODO
-        Tile startTile = p_Entry != null ? p_Entry.OnTile : p_Room.Tiles.Find(t => t.IsFloorTile);
+        Tile startTile = tiles[0];
+        if(p_Entry != null)
+        {
+            startTile = p_Entry.OnTile;
+        }
+        else
+        {
+            tiles.Remove(tiles[0]);
+        }
         CurRoom = p_Room;
         Player.transform.position = startTile.transform.position;
         Player.CurTile = startTile;
         startTile.CurUnit = Player;
 
         FocusCameraOnRoom(p_Room);
-        
-        //TODO SPAWN UNITS
+
+        while (Enemies.Count != 0)
+        {
+            Unit temp = Enemies[0];
+            Enemies.RemoveAt(0);
+            Destroy(temp.gameObject);
+        }
+
+        // TODO SPAWN UNITS
+        // TODO bug: may be spawned on wall tiles
+        // Spawn warrior(test)
+        int index = UnityEngine.Random.Range(0, tiles.Count);
+        GameObject warrior = Instantiate(Warrior);
+        warrior.transform.position = tiles[index].transform.position;
+        warrior.GetComponent<Unit>().CurTile = tiles[index];
+        tiles[index].CurUnit = warrior.GetComponent<Unit>();
+        tiles.RemoveAt(index);
+        Enemies.Add(warrior.GetComponent<Unit>());
+
+        index = UnityEngine.Random.Range(0, tiles.Count);
+        GameObject archer = Instantiate(Archer);
+        archer.transform.position = tiles[index].transform.position;
+        archer.GetComponent<Unit>().CurTile = tiles[index];
+        tiles[index].CurUnit = archer.GetComponent<Unit>();
+        tiles.RemoveAt(index);
+        Enemies.Add(archer.GetComponent<Unit>());
     }
 
     private void FocusCameraOnRoom(Room p_Room)
@@ -163,5 +216,4 @@ public class GameController : MonoBehaviour
 
         transform.position = p_To;
     }
-   
 }

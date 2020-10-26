@@ -19,15 +19,34 @@ public class Unit : MonoBehaviour
 
     public Stat GetStat(string p_Name)
     {
-        // TODO
-        return Stats[0];
+        foreach(Stat stat in Stats)
+        {
+            if (stat.Name == p_Name) return stat;
+        }
+        return null;
     }
 
     public Stat SetStat(string p_Name, int p_NewValue)
     {
-        // TODO
-        return Stats[0];
+        foreach (Stat stat in Stats)
+        {
+            if (stat.Name == p_Name)
+            {
+                stat.CurrentValue = p_NewValue;
+                return stat;
+            }
+        }
+        return null;
     }
 
     public List<Action> Actions;
+
+    public void TakeTurn(GameController p_Context)
+    {
+        UnitController controller = GetComponent<UnitController>();
+        if (controller)
+        {
+            controller.PerformTurn(p_Context, this);
+        }
+    }
 }
