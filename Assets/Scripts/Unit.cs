@@ -32,7 +32,24 @@ public class Unit : MonoBehaviour
         {
             if (stat.Name == p_Name)
             {
+                if(stat.Name == "Health" && p_NewValue == 0)
+                {
+                    //TODO Die
+                }
                 stat.CurrentValue = p_NewValue;
+                return stat;
+            }
+        }
+        return null;
+    }
+
+    public Stat SetStatMax(string p_Name, int p_NewValue)
+    {
+        foreach (Stat stat in Stats)
+        {
+            if (stat.Name == p_Name)
+            {
+                stat.MaxValue = p_NewValue;
                 return stat;
             }
         }
@@ -41,12 +58,41 @@ public class Unit : MonoBehaviour
 
     public List<Action> Actions;
 
+    public Action GetAction(string p_Name)
+    {
+        foreach(Action action in Actions)
+        {
+            if (action.Name == p_Name)
+            {
+                return action;
+            }
+        }
+        return null;
+    }
+
     public void TakeTurn(GameController p_Context)
     {
-        UnitController controller = GetComponent<UnitController>();
-        if (controller)
+        if (Controller)
         {
-            controller.PerformTurn(p_Context, this);
+            Controller.PerformTurn(p_Context, this);
         }
+    }
+
+    public void OnAttack()
+    {
+        StartCoroutine(Disapear(0.25f));
+    }
+
+    IEnumerator Disapear(float p_Time)
+    {
+        GetComponentInChildren<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(p_Time);
+        GetComponentInChildren<SpriteRenderer>().enabled = true;
+    }
+
+    public UnitController Controller;
+    private void Start()
+    {
+        Controller = GetComponent<UnitController>();
     }
 }

@@ -38,8 +38,9 @@ public class Generator : MonoBehaviour
 
         string strRoom = RoomTexts[0].text;
         Room startRoom = GenerateRoom(strRoom, Vector2Int.zero);
+        startRoom.Depth = 1;
 
-        GenerateConnectedRoom(startRoom, 1);
+        GenerateConnectedRoom(startRoom, 2);
         RemoveUnconnectedDoors();
 
         return GameMap;
@@ -133,7 +134,7 @@ public class Generator : MonoBehaviour
         return room;
     }
 
-    private void SpawnTile(char p_TileType, Room p_Room, Vector2Int p_RoomPosition, Direction p_Direction)
+    private void SpawnTile(char p_TileType, Room p_Room, Vector2Int p_RoomPosition, Direction p_Direction = Direction.NONE)
     {
         TileType curTile = TileTypes.Find(x => x.Name == p_TileType);
         Tile curObject = null;
@@ -228,13 +229,20 @@ public class Generator : MonoBehaviour
 
     private void GenerateConnectedRoom(Room p_Room, int p_Depth)
     {
-        if (p_Depth > MaxDepth)
+        if (p_Depth >= MaxDepth)
         {
             p_Room.isVictory = true;
             foreach(Tile tile in p_Room.Tiles)
             {
                 tile.GetComponentInChildren<SpriteRenderer>().color = VictoryColor;
             }
+            List<Tile> floor_tiles = p_Room.Tiles.FindAll(t => t.IsFloorTile);
+            int i = UnityEngine.Random.Range(0, floor_tiles.Count);
+            Tile to_be_removed = floor_tiles[i];
+            p_Room.Tiles.Remove(to_be_removed);
+            SpawnTile('V', p_Room, to_be_removed.RoomPosition);
+            Destroy(to_be_removed.gameObject);
+
             return;
         }
         foreach(Door door in p_Room.Doors)
@@ -339,6 +347,7 @@ public class Generator : MonoBehaviour
                             {
                                 // Generate room
                                 Room nextRoom = GenerateRoom(adjacentRoomText, reduced, roomOrigin);
+                                nextRoom.Depth = p_Depth;
                                 foreach(Door otherDoor in nextRoom.Doors)
                                 {
                                     if (otherDoor.OnTile.RoomPosition == doorLocalPos)

@@ -13,6 +13,7 @@ public class Room : MonoBehaviour
     public List<Door> Doors = new List<Door>();
 
     public bool isVictory = false;
+    public int Depth = 0;
 
     public Tile GetTileAt(Vector2Int p_LocalPosition)
     {

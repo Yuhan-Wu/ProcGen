@@ -12,6 +12,8 @@ public class Tile : MonoBehaviour
 
     public Unit CurUnit;
 
+    public bool Marked = false;
+
     public bool IsAdjacentTo(Tile p_Tile)
     {
         if (ParentRoom != p_Tile.ParentRoom) return false;
@@ -28,4 +30,6 @@ public class Tile : MonoBehaviour
     public bool IsDoorTile => Type == '0';
 
     public bool IsLavaTile => Type == 'L';
+
+    public bool IsVictoryTile => Type == 'V';
 }

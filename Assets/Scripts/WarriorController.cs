@@ -12,7 +12,8 @@ public class WarriorController : UnitController
         int distance = calculate_distance(warrior_position, player_position);
         if (distance == 1)
         {
-            // TODO attack
+            Action attack = p_Unit.GetAction("Attack");
+            attack.Perform(p_Unit, p_Context.Player, null);
         }
         else
         {
@@ -67,7 +68,7 @@ public class WarriorController : UnitController
             }
 
             curTile = p_Context.CurRoom.GetTileAt(move_to_pos);
-            MoveUnitToTile(p_Unit, curTile);
+            p_Context.MoveUnitToTile(p_Unit, curTile);
         }
     }
 

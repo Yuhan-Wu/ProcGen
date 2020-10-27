@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7282598165213649083}
   - component: {fileID: 7282598165213649082}
   - component: {fileID: 1070656946348455804}
+  - component: {fileID: 3175475102768191107}
   m_Layer: 0
   m_Name: Archer
   m_TagString: Untagged
@@ -50,7 +51,9 @@ MonoBehaviour:
   - Name: Health
     CurrentValue: 1
     MaxValue: 1
-  Actions: []
+  Actions:
+  - {fileID: 3175475102768191107}
+  Controller: {fileID: 0}
 --- !u!114 &1070656946348455804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +66,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5bf57ed77f9c4a498f69b1c272db50c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3175475102768191107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7282598165213649060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a2ffbd615c48a4a89080f331e95c4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Arrow: {fileID: 2352080696905152813, guid: d03e30c0ae6d9fb41947e261ad1bcb51, type: 3}
 --- !u!1 &7282598165444939502
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +149,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 3d9ec756450569245893875768ef7e68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

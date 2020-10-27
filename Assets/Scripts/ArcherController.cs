@@ -10,9 +10,11 @@ public class ArcherController : UnitController
         Vector2Int archer_position = p_Unit.CurTile.RoomPosition;
         Vector2Int player_position = p_Context.Player.CurTile.RoomPosition;
 
-        if (can_shoot(archer_position, player_position))
+        if (Can_shoot(archer_position, player_position))
         {
             // TODO attack
+            Action attack = p_Unit.GetAction("Attack");
+            attack.Perform(p_Unit, p_Context.Player, null);
         }
         else
         {
@@ -81,11 +83,11 @@ public class ArcherController : UnitController
                     }
                 }
             }
-            MoveUnitToTile(p_Unit, curTile);
+            p_Context.MoveUnitToTile(p_Unit, curTile);
         }
     }
 
-    private bool can_shoot(Vector2Int p_First, Vector2Int p_Second)
+    private bool Can_shoot(Vector2Int p_First, Vector2Int p_Second)
     {
         if (p_First.x == p_Second.x && Mathf.Abs(p_First.y - p_Second.y) >= 2) return true;
         if (p_First.y == p_Second.y && Mathf.Abs(p_First.x - p_Second.x) >= 2) return true;

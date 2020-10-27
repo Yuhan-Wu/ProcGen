@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -16,10 +17,16 @@ public class GameController : MonoBehaviour
     public List<Unit> CurRoomUnits = new List<Unit>();
     public Room CurRoom;
     public Color HighlightColor;
+    public Color MarkColor;
     public Color DefaultColor;
     public Tile HighlightTile = null;
+    public List<Tile> MarkTiles = new List<Tile>();
+    public Text Health = null;
+    public Text Mana = null;
+    public Text RoomDepth = null;
 
-    private bool PlayerTurn = true;
+
+    public bool PlayerTurn = true;
     private List<Unit> Enemies = new List<Unit>();
 
     private void Start()
@@ -37,7 +44,7 @@ public class GameController : MonoBehaviour
     {
         if (PlayerTurn)
         {
-            ProcessPlayerInput();
+            Player.TakeTurn(this);
         }
         else
         {
@@ -47,43 +54,11 @@ public class GameController : MonoBehaviour
             }
             PlayerTurn = true;
         }
-
+        Health.text = Player.GetStat("Health").CurrentValue.ToString();
+        Mana.text = Player.GetStat("Mana").CurrentValue.ToString();
     }
 
-    void ProcessPlayerInput()
-    {
-        Ray ray = MainCamera.ScreenPointToRay(Input.mousePosition);
-        Plane plane = new Plane(Vector3.forward, Vector3.zero);
-        float d;
-        if(plane.Raycast(ray, out d))
-        {
-            Vector3 worldPos = ray.GetPoint(d);
-            Vector3 localPos = worldPos - CurRoom.transform.position;
-            Vector2Int roomPos = new Vector2Int((int)localPos.x, (int)localPos.y);
-            Tile tile = CurRoom.GetTileAt(roomPos);
-            Highlight(tile);
-
-            if (Input.GetMouseButtonDown(0) && CanMoveTo(Player, tile))
-            {
-                MoveUnitToTile(Player, tile);
-                PlayerTurn = false;
-            }
-                
-        }
-    }
-
-    bool CanMoveTo(Unit p_Unit, Tile p_Tile)
-    {
-        if (p_Tile == null || p_Tile.IsLavaTile || !(p_Tile.IsFloorTile || p_Tile.IsDoorTile) || p_Tile.CurUnit != null)
-        {
-            return false;
-        }
-
-        if (p_Tile.IsAdjacentTo(p_Unit.CurTile)) return true;
-        return false;
-    }
-
-    void MoveUnitToTile(Unit p_Unit, Tile p_Tile)
+    public void MoveUnitToTile(Unit p_Unit, Tile p_Tile)
     {
         Tile from = null;
         if (p_Unit.CurTile != null)
@@ -107,10 +82,15 @@ public class GameController : MonoBehaviour
             Door door = p_To.GetComponent<Door>();
             Room room = door.ConnectedDoor.OnTile.ParentRoom;
             MoveToRoom(room, door.ConnectedDoor);
+        }else if (p_To.IsVictoryTile)
+        {
+            // TODO Win
         }
+        
     }
 
-    void Highlight(Tile p_Tile)
+    // Highlight and mark tiles
+    public void Highlight(Tile p_Tile)
     {
         if (p_Tile == HighlightTile)
         {
@@ -130,6 +110,26 @@ public class GameController : MonoBehaviour
 
         HighlightTile = p_Tile;
         p_Tile.GetComponentInChildren<SpriteRenderer>().color = HighlightColor;
+    }
+
+    public void Mark(Tile p_Tile)
+    {
+        if (!p_Tile.IsFloorTile) return;
+
+        p_Tile.GetComponentInChildren<SpriteRenderer>().color = MarkColor;
+        p_Tile.Marked = true;
+        MarkTiles.Add(p_Tile);
+    }
+
+    public void UnMark()
+    {
+        foreach(Tile tile in MarkTiles)
+        {
+            tile.GetComponentInChildren<SpriteRenderer>().color = DefaultColor;
+            tile.Marked = false;
+        }
+
+        MarkTiles.Clear();
     }
 
     void MoveToRoom(Room p_Room, Door p_Entry = null)
@@ -153,31 +153,41 @@ public class GameController : MonoBehaviour
 
         FocusCameraOnRoom(p_Room);
 
+        DestroyAllEnemies();
+
+        // TODO SPAWN UNITS
+        // TODO bug: may be spawned on wall tiles
+        // Spawn warrior(test)
+
+        for(int i = 0; i < p_Room.Depth + 1; i++)
+        {
+            if (i % 2 == 0) SpawnEnemy(tiles, Warrior);
+            else if (i % 2 == 1) SpawnEnemy(tiles, Archer);
+        }
+
+        Player.SetStat("Mana", Player.GetStat("Mana").MaxValue);
+        RoomDepth.text = CurRoom.Depth.ToString();
+    }
+
+    private void SpawnEnemy(List<Tile> p_Tiles, GameObject p_Enemy)
+    {
+        int index = UnityEngine.Random.Range(0, p_Tiles.Count);
+        GameObject enemy = Instantiate(p_Enemy);
+        enemy.transform.position = p_Tiles[index].transform.position;
+        enemy.GetComponent<Unit>().CurTile = p_Tiles[index];
+        p_Tiles[index].CurUnit = enemy.GetComponent<Unit>();
+        p_Tiles.RemoveAt(index);
+        Enemies.Add(enemy.GetComponent<Unit>());
+    }
+
+    public void DestroyAllEnemies()
+    {
         while (Enemies.Count != 0)
         {
             Unit temp = Enemies[0];
             Enemies.RemoveAt(0);
             Destroy(temp.gameObject);
         }
-
-        // TODO SPAWN UNITS
-        // TODO bug: may be spawned on wall tiles
-        // Spawn warrior(test)
-        int index = UnityEngine.Random.Range(0, tiles.Count);
-        GameObject warrior = Instantiate(Warrior);
-        warrior.transform.position = tiles[index].transform.position;
-        warrior.GetComponent<Unit>().CurTile = tiles[index];
-        tiles[index].CurUnit = warrior.GetComponent<Unit>();
-        tiles.RemoveAt(index);
-        Enemies.Add(warrior.GetComponent<Unit>());
-
-        index = UnityEngine.Random.Range(0, tiles.Count);
-        GameObject archer = Instantiate(Archer);
-        archer.transform.position = tiles[index].transform.position;
-        archer.GetComponent<Unit>().CurTile = tiles[index];
-        tiles[index].CurUnit = archer.GetComponent<Unit>();
-        tiles.RemoveAt(index);
-        Enemies.Add(archer.GetComponent<Unit>());
     }
 
     private void FocusCameraOnRoom(Room p_Room)
@@ -199,7 +209,7 @@ public class GameController : MonoBehaviour
 
         Vector3 center = (max - min) / 2.0f + min;
 
-        StartCoroutine(MoveTo(MainCamera.transform, new Vector3(center.x, center.y, MainCamera.transform.position.z), 0.5f));
+        StartCoroutine(MoveTo(MainCamera.transform, new Vector3(center.x, center.y, MainCamera.transform.position.z), 0.3f));
     }
 
     IEnumerator MoveTo(Transform p_Target, Vector3 p_To, float p_Duration)

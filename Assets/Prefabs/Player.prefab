@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6311111265268480590}
   - component: {fileID: 5457841874445041447}
+  - component: {fileID: 3554990226137906614}
+  - component: {fileID: 7936275487785514844}
+  - component: {fileID: 4473390344555835450}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -44,6 +47,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc90cd4f5ebecb448ee3e3ba514c5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurTile: {fileID: 0}
+  Stats:
+  - Name: Health
+    CurrentValue: 3
+    MaxValue: 3
+  - Name: Mana
+    CurrentValue: 5
+    MaxValue: 5
+  Actions:
+  - {fileID: 7936275487785514844}
+  - {fileID: 4473390344555835450}
+  Controller: {fileID: 0}
+--- !u!114 &3554990226137906614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6311111265268480591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97860aa8fe2ae8e49ad9189e32a50609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveAction: {fileID: 7936275487785514844}
+--- !u!114 &7936275487785514844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6311111265268480591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a62f93f401538a044bb71edcec4563a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Walk
+--- !u!114 &4473390344555835450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6311111265268480591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24b88f49345b0b3408df27ce8929383b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Jump
+  Minimum: 2
+  Maximum: 2
 --- !u!1 &6311111266201576735
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,7 +170,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c608e00cca7a59e4aa494ccfa9b54548, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
