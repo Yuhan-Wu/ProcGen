@@ -26,14 +26,11 @@ public class ArcherAttackAction : Action
         StartCoroutine(MoveArrow(cur_arrow.transform, to_position, 0.2f));
         p_To.OnAttack();
 
-        int cur = p_To.GetStat("Health").CurrentValue;
-        cur = cur - 1;
-        p_To.SetStat("Health", cur);
+        
     }
 
     private IEnumerator MoveArrow(Transform p_Target, Vector3 p_To, float p_Duration)
     {
-        Vector3 original = p_Target.position;
         float time = 0;
         Vector3 start = p_Target.position;
         while (time <= p_Duration)

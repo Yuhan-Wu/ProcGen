@@ -38,11 +38,18 @@ public class JumpAction : Action
 
     private bool CanMoveTo(Tile p_Tile)
     {
-        if (p_Tile == null || p_Tile.IsLavaTile || !(p_Tile.IsFloorTile || p_Tile.IsDoorTile) || p_Tile.CurUnit != null)
+        if (p_Tile == null || p_Tile.IsLavaTile ||
+            !(p_Tile.IsVictoryTile || p_Tile.IsPowerUpTile || p_Tile.IsFloorTile || p_Tile.IsDoorTile) ||
+            p_Tile.CurUnit != null)
         {
             return false;
         }
 
         return true;
+    }
+
+    public void IncreaseRadius()
+    {
+        Maximum++;
     }
 }

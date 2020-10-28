@@ -27,10 +27,11 @@ public class GameController : MonoBehaviour
 
 
     public bool PlayerTurn = true;
-    private List<Unit> Enemies = new List<Unit>();
+    public List<Unit> Enemies = new List<Unit>();
 
     private void Start()
     {
+        Player.Context = this;
         if(MainCamera == null)
         {
             MainCamera = Camera.main;
@@ -44,47 +45,69 @@ public class GameController : MonoBehaviour
     {
         if (PlayerTurn)
         {
-            Player.TakeTurn(this);
+            Player.TakeTurn();
         }
         else
         {
             foreach (Unit enemy in Enemies)
             {
-                enemy.TakeTurn(this);
+                if(enemy) enemy.TakeTurn();
             }
             PlayerTurn = true;
         }
-        Health.text = Player.GetStat("Health").CurrentValue.ToString();
-        Mana.text = Player.GetStat("Mana").CurrentValue.ToString();
+        Health.text = Player.GetStat("Health").CurrentValue.ToString() + " / " + Player.GetStat("Health").MaxValue.ToString();
+        Mana.text = Player.GetStat("Mana").CurrentValue.ToString() + " / " + Player.GetStat("Mana").MaxValue.ToString();
     }
 
     public void MoveUnitToTile(Unit p_Unit, Tile p_Tile)
     {
         Tile from = null;
-        if (p_Unit.CurTile != null)
+        if (p_Unit)
         {
-            from = p_Unit.CurTile;
-            p_Unit.CurTile.CurUnit = null;
+            if (p_Unit.CurTile != null)
+            {
+                from = p_Unit.CurTile;
+                p_Unit.CurTile.CurUnit = null;
+            }
+
+            p_Unit.CurTile = p_Tile;
+            p_Tile.CurUnit = p_Unit;
+
+            StartCoroutine(MoveTo(p_Unit.transform, p_Tile.transform.position, 0.25f));
+            OnUnitEnterTile(p_Unit, p_Tile, from);
         }
-
-        p_Unit.CurTile = p_Tile;
-        p_Tile.CurUnit = p_Unit;
-
-        StartCoroutine(MoveTo(p_Unit.transform, p_Tile.transform.position, 0.25f));
-
-        OnUnitEnterTile(p_Unit, p_Tile, from);
     }
 
     void OnUnitEnterTile(Unit p_Unit, Tile p_To, Tile p_From)
     {
         if(p_To.IsDoorTile)
         {
+            
             Door door = p_To.GetComponent<Door>();
             Room room = door.ConnectedDoor.OnTile.ParentRoom;
+            p_Unit.CurTile = door.ConnectedDoor.OnTile;
+            door.ConnectedDoor.OnTile.CurUnit = p_Unit;
             MoveToRoom(room, door.ConnectedDoor);
         }else if (p_To.IsVictoryTile)
         {
             // TODO Win
+        }else if (p_To.IsLavaTile)
+        {
+            Enemies.Remove(p_Unit);
+            p_Unit.Die();
+        }else if (p_To.IsWallTile)
+        {
+            p_Unit.OnAttack();
+        }else if (p_To.IsPowerUpTile)
+        {
+            if(p_Unit == Player)
+            {
+                if (!p_To.GetComponent<TilePowerUp>().Used)
+                {
+                    p_To.GetComponent<TilePowerUp>().ShowOptions();
+                    p_To.GetComponent<TilePowerUp>().Used = true;
+                }
+            }
         }
         
     }
@@ -114,7 +137,7 @@ public class GameController : MonoBehaviour
 
     public void Mark(Tile p_Tile)
     {
-        if (!p_Tile.IsFloorTile) return;
+        if (!(p_Tile.IsFloorTile || p_Tile.IsDoorTile || p_Tile.IsVictoryTile || p_Tile.IsPowerUpTile)) return;
 
         p_Tile.GetComponentInChildren<SpriteRenderer>().color = MarkColor;
         p_Tile.Marked = true;
@@ -155,10 +178,6 @@ public class GameController : MonoBehaviour
 
         DestroyAllEnemies();
 
-        // TODO SPAWN UNITS
-        // TODO bug: may be spawned on wall tiles
-        // Spawn warrior(test)
-
         for(int i = 0; i < p_Room.Depth + 1; i++)
         {
             if (i % 2 == 0) SpawnEnemy(tiles, Warrior);
@@ -171,10 +190,49 @@ public class GameController : MonoBehaviour
 
     private void SpawnEnemy(List<Tile> p_Tiles, GameObject p_Enemy)
     {
-        int index = UnityEngine.Random.Range(0, p_Tiles.Count);
+        int index = 0;
+        bool result = false;
+        int tries = 0;
+        while (!result && tries!=100)
+        {
+            tries++;
+            index = UnityEngine.Random.Range(0, p_Tiles.Count);
+            Tile temp = p_Tiles[index];
+
+            Tile left = temp.ParentRoom.GetTileAt(temp.RoomPosition - new Vector2Int(1, 0));
+            if (left && left.IsDoorTile)
+            {
+                result = false;
+                continue;
+            }
+
+            Tile right = temp.ParentRoom.GetTileAt(temp.RoomPosition + new Vector2Int(1, 0));
+            if (right && right.IsDoorTile)
+            {
+                result = false;
+                continue;
+            }
+
+            Tile up = temp.ParentRoom.GetTileAt(temp.RoomPosition + new Vector2Int(0, 1));
+            if (up && up.IsDoorTile)
+            {
+                result = false;
+                continue;
+            }
+
+            Tile down = temp.ParentRoom.GetTileAt(temp.RoomPosition - new Vector2Int(0, 1));
+            if (down && down.IsDoorTile)
+            {
+                result = false;
+                continue;
+            }
+
+            result = true;
+        }
         GameObject enemy = Instantiate(p_Enemy);
         enemy.transform.position = p_Tiles[index].transform.position;
         enemy.GetComponent<Unit>().CurTile = p_Tiles[index];
+        enemy.GetComponent<Unit>().Context = this;
         p_Tiles[index].CurUnit = enemy.GetComponent<Unit>();
         p_Tiles.RemoveAt(index);
         Enemies.Add(enemy.GetComponent<Unit>());
@@ -186,7 +244,7 @@ public class GameController : MonoBehaviour
         {
             Unit temp = Enemies[0];
             Enemies.RemoveAt(0);
-            Destroy(temp.gameObject);
+            if (temp) temp.Die();
         }
     }
 
@@ -219,7 +277,7 @@ public class GameController : MonoBehaviour
         while (time <= p_Duration)
         {
             float t = Mathf.Clamp01(time / p_Duration);
-            p_Target.transform.position = Vector3.Lerp(start, p_To, t);
+            if(p_Target) p_Target.transform.position = Vector3.Lerp(start, p_To, t);
             yield return new WaitForEndOfFrame();
             time += Time.deltaTime;
         }

@@ -427,7 +427,7 @@ public class Generator : MonoBehaviour
                 Tile curObject = null;
                 curObject = Instantiate(curTile.TileObject, room.transform);
                 curObject.transform.localPosition = new Vector3(door.transform.localPosition.x, door.transform.localPosition.y, 0);
-                curObject.Type = 'W';
+                curObject.Type = 'B';
                 curObject.ParentRoom = room;
                 room.Tiles.Add(curObject);
                 Destroy(door.gameObject);

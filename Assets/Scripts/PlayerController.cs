@@ -8,11 +8,19 @@ public class PlayerController : UnitController
     public Action ActiveAction = null;
     public ButtonController ButnController;
 
+    public bool CanThrow = true;
+    public GameObject Sword;
+
+    public bool DisableAction = false;
+
     public override void PerformTurn(GameController p_Context, Unit p_Unit)
     {
-        p_Context.UnMark();
-        ActiveAction.Perform(p_Unit, null, p_Context);
-        ProcessPlayerInput(p_Context, p_Unit);
+        if (!DisableAction)
+        {
+            p_Context.UnMark();
+            ActiveAction.Perform(p_Unit, null, p_Context);
+            ProcessPlayerInput(p_Context, p_Unit);
+        }
     }
 
     public void SetActiveAction(string p_Name)
@@ -52,13 +60,102 @@ public class PlayerController : UnitController
 
             if (tile && Input.GetMouseButtonDown(0) && (tile.Marked || tile.IsDoorTile))
             {
-                p_Context.MoveUnitToTile(p_Unit, tile);
+                if (Movable)
+                {
+                    if (CanThrow)
+                    {
+                        Vector2Int direction = tile.RoomPosition - p_Unit.CurTile.RoomPosition;
+                        if (direction.x > 0)
+                        {
+                            Tile right = tile.ParentRoom.GetTileAt(tile.RoomPosition + new Vector2Int(1, 0));
+                            if (right && right.CurUnit)
+                                right.CurUnit.OnAttack();
+                        }
+                        else if (direction.x < 0)
+                        {
+                            Tile left = tile.ParentRoom.GetTileAt(tile.RoomPosition + new Vector2Int(-1, 0));
+                            if (left && left.CurUnit) left.CurUnit.OnAttack();
+                        }
+                        else if (direction.y > 0)
+                        {
+                            Tile up = tile.ParentRoom.GetTileAt(tile.RoomPosition + new Vector2Int(0, 1));
+                            if (up && up.CurUnit) up.CurUnit.OnAttack();
+                        }
+                        else
+                        {
+                            Tile down = tile.ParentRoom.GetTileAt(tile.RoomPosition + new Vector2Int(0, -1));
+                            if (down && down.CurUnit) down.CurUnit.OnAttack();
+                        }
+                    }
+                    
+                    if (tile.HasSword)
+                    {
+                        CanThrow = true;
+                        tile.HasSword = false;
+                        if (tile.PickUp) Destroy(tile.PickUp);
+                        tile.PickUp = null;
+                    }
+                    
+                    p_Context.MoveUnitToTile(p_Unit, tile);
+                }
+                else if (ActiveAction.Name == "ThrowSpear" && CanThrow)
+                {
+                    GameObject cur_sword = Instantiate(Sword);
+                    cur_sword.transform.position = p_Unit.transform.position;
+                    Vector3 to_position = tile.transform.position;
+                    StartCoroutine(MoveSword(cur_sword.transform, to_position, 0.2f));
+                    tile.CurUnit.OnAttack();
+                    tile.HasSword = true;
+                    tile.PickUp = cur_sword;
+                    CanThrow = false;
+                    Movable = true;
+                }
+                else
+                {
+                    Unit enemy_unit = tile.CurUnit;
+                    Vector2Int direction = tile.RoomPosition - p_Unit.CurTile.RoomPosition;
+                    
+                    if (direction.x > 0)
+                    {
+                        Tile right = tile.ParentRoom.GetTileAt(tile.RoomPosition + new Vector2Int(1, 0));
+                        p_Context.MoveUnitToTile(enemy_unit, right);
+                    }
+                    else if (direction.x < 0)
+                    {
+                        Tile left = tile.ParentRoom.GetTileAt(tile.RoomPosition + new Vector2Int(-1, 0));
+                        p_Context.MoveUnitToTile(enemy_unit, left);
+                    }
+                    else if (direction.y > 0)
+                    {
+                        Tile up = tile.ParentRoom.GetTileAt(tile.RoomPosition + new Vector2Int(0, 1));
+                        p_Context.MoveUnitToTile(enemy_unit, up);
+                    }
+                    else
+                    {
+                        Tile down = tile.ParentRoom.GetTileAt(tile.RoomPosition + new Vector2Int(0, -1));
+                        p_Context.MoveUnitToTile(enemy_unit, down);
+                    }
+                    Movable = true;
+                }
                 p_Context.PlayerTurn = false;
                 p_Context.UnMark();
                 ButnController.ActivateActions();
                 p_Unit.SetStat("Mana", p_Unit.GetStat("Mana").CurrentValue - ActiveAction.Cost);
                 SetActiveAction("Walk");
             }
+        }
+    }
+
+    private IEnumerator MoveSword(Transform p_Target, Vector3 p_To, float p_Duration)
+    {
+        float time = 0;
+        Vector3 start = p_Target.position;
+        while (time <= p_Duration)
+        {
+            float t = Mathf.Clamp01(time / p_Duration);
+            p_Target.transform.position = Vector3.Lerp(start, p_To, t);
+            yield return new WaitForEndOfFrame();
+            time += Time.deltaTime;
         }
     }
 }

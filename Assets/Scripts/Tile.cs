@@ -14,6 +14,9 @@ public class Tile : MonoBehaviour
 
     public bool Marked = false;
 
+    public bool HasSword = false;
+    public GameObject PickUp = null;
+
     public bool IsAdjacentTo(Tile p_Tile)
     {
         if (ParentRoom != p_Tile.ParentRoom) return false;
@@ -32,4 +35,8 @@ public class Tile : MonoBehaviour
     public bool IsLavaTile => Type == 'L';
 
     public bool IsVictoryTile => Type == 'V';
+
+    public bool IsWallTile => Type == 'B';
+
+    public bool IsPowerUpTile => Type == 'H';
 }

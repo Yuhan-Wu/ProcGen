@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3554990226137906614}
   - component: {fileID: 7936275487785514844}
   - component: {fileID: 4473390344555835450}
+  - component: {fileID: 4323813955276552729}
+  - component: {fileID: 6461161844499501852}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -48,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurTile: {fileID: 0}
+  Context: {fileID: 0}
   Stats:
   - Name: Health
     CurrentValue: 3
@@ -58,6 +61,8 @@ MonoBehaviour:
   Actions:
   - {fileID: 7936275487785514844}
   - {fileID: 4473390344555835450}
+  - {fileID: 4323813955276552729}
+  - {fileID: 6461161844499501852}
   Controller: {fileID: 0}
 --- !u!114 &3554990226137906614
 MonoBehaviour:
@@ -71,7 +76,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97860aa8fe2ae8e49ad9189e32a50609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Movable: 1
   ActiveAction: {fileID: 7936275487785514844}
+  ButnController: {fileID: 0}
+  CanThrow: 1
+  Sword: {fileID: 5689291381679619765, guid: 65de48128f6f2264fb32c3600fc2ffb5, type: 3}
 --- !u!114 &7936275487785514844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,6 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Walk
+  Cost: 0
 --- !u!114 &4473390344555835450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,8 +108,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Jump
+  Cost: 0
   Minimum: 2
   Maximum: 2
+--- !u!114 &4323813955276552729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6311111265268480591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1eea5eb5d922f24183da19fd446e6cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Push
+  Cost: 0
+  Radius: 1
+--- !u!114 &6461161844499501852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6311111265268480591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21b62d81d1dbfec4ca74132cb6f0a0d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: ThrowSpear
+  Cost: 0
+  Minimum: 2
+  Maximum: 3
 --- !u!1 &6311111266201576735
 GameObject:
   m_ObjectHideFlags: 0

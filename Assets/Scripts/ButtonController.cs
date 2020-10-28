@@ -10,7 +10,7 @@ public class ButtonController : MonoBehaviour
 
     public void ActivateActions()
     {
-        // Mana check
+        // TODO Mana check
         foreach(Button button in ActionButtons)
         {
             button.interactable = true;
@@ -29,4 +29,13 @@ public class ButtonController : MonoBehaviour
         CancelButton.interactable = true;
     }
 
+    public void DeactiveAll()
+    {
+        foreach (Button button in ActionButtons)
+        {
+            button.interactable = false;
+        }
+
+        CancelButton.interactable = false;
+    }
 }

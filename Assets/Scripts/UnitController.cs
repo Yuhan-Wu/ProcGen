@@ -7,11 +7,14 @@ public abstract class UnitController : MonoBehaviour
     // Archer: get to the same row/column and within proper distance
     // Warrior: get as close to player as possible
     // Player: ProcessPlayerInput()
+    public bool Movable = true;
+
     public abstract void PerformTurn(GameController p_Context, Unit p_Unit);
 
     protected virtual bool CanMoveTo(Unit p_Unit, Tile p_Tile)
     {
-        if (p_Tile == null || p_Tile.IsLavaTile || !(p_Tile.IsFloorTile || p_Tile.IsDoorTile) || p_Tile.CurUnit != null)
+        if (p_Tile == null || p_Tile.IsLavaTile || 
+            !(p_Tile.IsPowerUpTile || p_Tile.IsVictoryTile || p_Tile.IsFloorTile || p_Tile.IsDoorTile) || p_Tile.CurUnit != null)
         {
             return false;
         }

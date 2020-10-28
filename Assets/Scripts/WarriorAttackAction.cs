@@ -11,10 +11,6 @@ public class WarriorAttackAction : Action
         StartCoroutine(MoveToAndBack(p_From.transform, p_To.CurTile.transform.position, 0.2f));
 
         p_To.OnAttack();
-
-        int cur = p_To.GetStat("Health").CurrentValue;
-        cur = cur - 1;
-        p_To.SetStat("Health", cur);
     }
 
     private IEnumerator MoveToAndBack(Transform p_Target, Vector3 p_To, float p_Duration)
