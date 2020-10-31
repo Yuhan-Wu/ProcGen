@@ -9,12 +9,11 @@ public class TilePowerUp : MonoBehaviour
     public List<GameObject> Buttons = new List<GameObject>();
     public bool Used = false;
 
-    private void Start()
+    private void Awake()
     {
         OptionPanel = GameObject.Find("PowerUp");
         if (OptionPanel)
         {
-            OptionPanel.SetActive(false);
             foreach (RectTransform btn in OptionPanel.GetComponent<RectTransform>())
             {
                 Buttons.Add(btn.gameObject);
@@ -35,8 +34,8 @@ public class TilePowerUp : MonoBehaviour
         {
             if (i != random_remove)
             {
-                Buttons[real_index].SetActive(true);
-                Buttons[real_index].GetComponent<RectTransform>().localPosition = new Vector3(0, initial_y - 50 * real_index, 0);
+                Buttons[i].SetActive(true);
+                Buttons[i].GetComponent<RectTransform>().localPosition = new Vector3(0, initial_y - 50 * real_index, 0);
                 real_index++;
             }
         }
