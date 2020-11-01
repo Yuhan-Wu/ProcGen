@@ -128,3 +128,7 @@ MonoBehaviour:
   Type: 0
   RoomPosition: {x: 0, y: 0}
   ParentRoom: {fileID: 0}
+  CurUnit: {fileID: 0}
+  Marked: 0
+  HasSword: 0
+  PickUp: {fileID: 0}

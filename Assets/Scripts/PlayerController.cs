@@ -21,6 +21,7 @@ public class PlayerController : UnitController
         if (GetComponent<Unit>().GetStat("Health").CurrentValue <= 0)
         {
             Lose.SetActive(true);
+            ButnController.DeactiveAll();
             p_Context.Over = true;
             return;
         }
@@ -33,6 +34,7 @@ public class PlayerController : UnitController
         if(GetComponent<Unit>().CurTile.Type == 'V')
         {
             Win.SetActive(true);
+            ButnController.DeactiveAll();
             p_Context.Over = true;
         }
     }

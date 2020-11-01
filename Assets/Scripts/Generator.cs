@@ -227,7 +227,7 @@ public class Generator : MonoBehaviour
 
     private void GenerateConnectedRoom(Room p_Room, int p_Depth)
     {
-        if (p_Depth >= MaxDepth)
+        if (p_Depth > MaxDepth)
         {
             p_Room.isVictory = true;
             foreach(Tile tile in p_Room.Tiles)

@@ -16,6 +16,12 @@ public class ButtonController : MonoBehaviour
         {
             if(Player.GetStat("Mana").CurrentValue >= Player.GetAction(button.gameObject.name).Cost)
                 button.interactable = true;
+            if (button.gameObject.name == "ThrowSpear")
+            {
+                if (!Player.GetComponent<PlayerController>().CanThrow)
+                    button.interactable = false;
+            }
+                
         }
 
         CancelButton.interactable = false;

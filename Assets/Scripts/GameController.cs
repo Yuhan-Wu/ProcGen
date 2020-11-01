@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class GameController : MonoBehaviour
 {
@@ -123,7 +124,16 @@ public class GameController : MonoBehaviour
         }
         if (HighlightTile != null)
         {
-            HighlightTile.GetComponentInChildren<SpriteRenderer>().color = DefaultColor;
+            if (CurRoom.isVictory)
+            {
+                HighlightTile.GetComponentInChildren<SpriteRenderer>().color = MapGenerator.VictoryColor;
+            }
+            else
+            {
+                HighlightTile.GetComponentInChildren<SpriteRenderer>().color = DefaultColor;
+            }
+            
+
             HighlightTile = null;
         }
         if (p_Tile == null)
@@ -148,6 +158,11 @@ public class GameController : MonoBehaviour
 
     public void UnMark()
     {
+        Color color = DefaultColor;
+        if (CurRoom.isVictory)
+        {
+            color = MapGenerator.VictoryColor;
+        }
         foreach(Tile tile in MarkTiles)
         {
             tile.GetComponentInChildren<SpriteRenderer>().color = DefaultColor;
