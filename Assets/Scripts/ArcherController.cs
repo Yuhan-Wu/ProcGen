@@ -12,7 +12,6 @@ public class ArcherController : UnitController
 
         if (Can_shoot(archer_position, player_position))
         {
-            // TODO attack
             Action attack = p_Unit.GetAction("Attack");
             attack.Perform(p_Unit, p_Context.Player, null);
         }

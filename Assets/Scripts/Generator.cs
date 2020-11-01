@@ -198,12 +198,10 @@ public class Generator : MonoBehaviour
                                     }
                                     else if (p_Tiles[i, j] == '0' && tile.Type == '0')
                                     {
-                                        // TODO both are doors
                                         break;
                                     }
                                     else if(p_Tiles[i,j]=='1'&& tile.Type == '1')
                                     {
-                                        // TODO both are doors
                                         break;
                                     }
                                     else

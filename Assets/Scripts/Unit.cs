@@ -35,16 +35,12 @@ public class Unit : MonoBehaviour
             {
                 if(stat.Name == "Health" && p_NewValue == 0)
                 {
-                    if(this == Context.Player)
-                    {
-                        // TODO If it's player, show game lose
-                    }
-                    else
+                    if(this != Context.Player)
                     {
                         Context.Enemies.Remove(this);
                         this.CurTile.CurUnit = null;
+                        Die();
                     }
-                    Die();
                 }
                 stat.CurrentValue = p_NewValue;
                 return stat;

@@ -13,13 +13,27 @@ public class PlayerController : UnitController
 
     public bool DisableAction = false;
 
+    public GameObject Win;
+    public GameObject Lose;
+
     public override void PerformTurn(GameController p_Context, Unit p_Unit)
     {
+        if (GetComponent<Unit>().GetStat("Health").CurrentValue <= 0)
+        {
+            Lose.SetActive(true);
+            p_Context.Over = true;
+            return;
+        }
         if (!DisableAction)
         {
             p_Context.UnMark();
             ActiveAction.Perform(p_Unit, null, p_Context);
             ProcessPlayerInput(p_Context, p_Unit);
+        }
+        if(GetComponent<Unit>().CurTile.Type == 'V')
+        {
+            Win.SetActive(true);
+            p_Context.Over = true;
         }
     }
 
@@ -139,8 +153,8 @@ public class PlayerController : UnitController
                 }
                 p_Context.PlayerTurn = false;
                 p_Context.UnMark();
-                ButnController.ActivateActions();
                 p_Unit.SetStat("Mana", p_Unit.GetStat("Mana").CurrentValue - ActiveAction.Cost);
+                ButnController.ActivateActions();
                 SetActiveAction("Walk");
             }
         }

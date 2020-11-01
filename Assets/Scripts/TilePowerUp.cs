@@ -24,7 +24,6 @@ public class TilePowerUp : MonoBehaviour
 
     public void ShowOptions()
     {
-        // TODO disable actions
         OptionPanel.SetActive(true);
         // TODO bad coding style
         int random_remove = UnityEngine.Random.Range(0, Buttons.Count);

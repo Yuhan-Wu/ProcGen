@@ -179,10 +179,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
+    m_FontSize: 20
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -211,6 +211,16 @@ PrefabInstance:
       propertyPath: ButnController
       value: 
       objectReference: {fileID: 1969639286}
+    - target: {fileID: 3554990226137906614, guid: 641988b6dc302ce4686f1f6c297f4cbd,
+        type: 3}
+      propertyPath: Win
+      value: 
+      objectReference: {fileID: 698157286}
+    - target: {fileID: 3554990226137906614, guid: 641988b6dc302ce4686f1f6c297f4cbd,
+        type: 3}
+      propertyPath: Lose
+      value: 
+      objectReference: {fileID: 184781364}
     - target: {fileID: 6311111265268480590, guid: 641988b6dc302ce4686f1f6c297f4cbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -365,10 +375,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
+    m_FontSize: 20
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -1015,6 +1025,7 @@ MonoBehaviour:
   Mana: {fileID: 592262862}
   RoomDepth: {fileID: 155490044}
   PlayerTurn: 1
+  Over: 0
   Enemies: []
 --- !u!1 &223949374
 GameObject:
@@ -1386,10 +1397,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
+    m_FontSize: 20
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -1418,6 +1429,7 @@ GameObject:
   - component: {fileID: 451408525}
   - component: {fileID: 451408524}
   - component: {fileID: 451408523}
+  - component: {fileID: 451408526}
   m_Layer: 5
   m_Name: Restart
   m_TagString: Untagged
@@ -1487,7 +1499,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 451408524}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 451408526}
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &451408524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1525,6 +1548,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 451408521}
   m_CullTransparentMesh: 0
+--- !u!114 &451408526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451408521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d064dd8f1985af4499ba18d09d97bb9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &480172588
 GameObject:
   m_ObjectHideFlags: 0
@@ -3118,6 +3153,7 @@ GameObject:
   - component: {fileID: 1411770835}
   - component: {fileID: 1411770834}
   - component: {fileID: 1411770833}
+  - component: {fileID: 1411770836}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -3187,7 +3223,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1411770834}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1411770836}
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1411770834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3225,6 +3272,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1411770831}
   m_CullTransparentMesh: 0
+--- !u!114 &1411770836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411770831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3840a7283c6b9434ea800783aee3e6ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1674334280
 GameObject:
   m_ObjectHideFlags: 0
@@ -3315,6 +3374,7 @@ GameObject:
   - component: {fileID: 1709498951}
   - component: {fileID: 1709498950}
   - component: {fileID: 1709498949}
+  - component: {fileID: 1709498952}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -3384,7 +3444,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1709498950}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1709498952}
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1709498950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3422,6 +3493,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709498947}
   m_CullTransparentMesh: 0
+--- !u!114 &1709498952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709498947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3840a7283c6b9434ea800783aee3e6ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1739796261
 GameObject:
   m_ObjectHideFlags: 0
@@ -3558,10 +3641,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
+    m_FontSize: 20
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -3590,6 +3673,7 @@ GameObject:
   - component: {fileID: 1762381468}
   - component: {fileID: 1762381467}
   - component: {fileID: 1762381466}
+  - component: {fileID: 1762381469}
   m_Layer: 5
   m_Name: Restart
   m_TagString: Untagged
@@ -3659,7 +3743,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1762381467}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1762381469}
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1762381467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3697,6 +3792,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1762381464}
   m_CullTransparentMesh: 0
+--- !u!114 &1762381469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762381464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d064dd8f1985af4499ba18d09d97bb9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1947357457
 GameObject:
   m_ObjectHideFlags: 0
@@ -3905,6 +4012,7 @@ MonoBehaviour:
   - {fileID: 209882427}
   - {fileID: 1288423005}
   CancelButton: {fileID: 646070624}
+  Context: {fileID: 219147915}
 --- !u!1 &2020932219
 GameObject:
   m_ObjectHideFlags: 0

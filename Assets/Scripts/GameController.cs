@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
 
 
     public bool PlayerTurn = true;
+    public bool Over = false;
     public List<Unit> Enemies = new List<Unit>();
 
     private void Start()
@@ -43,18 +44,22 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerTurn)
+        if (!Over)
         {
-            Player.TakeTurn();
-        }
-        else
-        {
-            foreach (Unit enemy in Enemies)
+            if (PlayerTurn)
             {
-                if(enemy) enemy.TakeTurn();
+                Player.TakeTurn();
             }
-            PlayerTurn = true;
+            else
+            {
+                foreach (Unit enemy in Enemies)
+                {
+                    if (enemy) enemy.TakeTurn();
+                }
+                PlayerTurn = true;
+            }
         }
+        
         Health.text = Player.GetStat("Health").CurrentValue.ToString() + " / " + Player.GetStat("Health").MaxValue.ToString();
         Mana.text = Player.GetStat("Mana").CurrentValue.ToString() + " / " + Player.GetStat("Mana").MaxValue.ToString();
     }
@@ -88,9 +93,6 @@ public class GameController : MonoBehaviour
             p_Unit.CurTile = door.ConnectedDoor.OnTile;
             door.ConnectedDoor.OnTile.CurUnit = p_Unit;
             MoveToRoom(room, door.ConnectedDoor);
-        }else if (p_To.IsVictoryTile)
-        {
-            // TODO Win
         }else if (p_To.IsLavaTile)
         {
             Enemies.Remove(p_Unit);
@@ -159,7 +161,7 @@ public class GameController : MonoBehaviour
     {
         List<Tile> tiles = p_Room.Tiles.FindAll(t => t.IsFloorTile);
 
-        // TODO
+        // TODO hide other rooms
         Tile startTile = tiles[0];
         if(p_Entry != null)
         {

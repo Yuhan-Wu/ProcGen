@@ -7,13 +7,15 @@ public class ButtonController : MonoBehaviour
 {
     public List<Button> ActionButtons = new List<Button>();
     public Button CancelButton;
+    public GameController Context;
 
     public void ActivateActions()
     {
-        // TODO Mana check
+        Unit Player = Context.Player;
         foreach(Button button in ActionButtons)
         {
-            button.interactable = true;
+            if(Player.GetStat("Mana").CurrentValue >= Player.GetAction(button.gameObject.name).Cost)
+                button.interactable = true;
         }
 
         CancelButton.interactable = false;

@@ -29,6 +29,6 @@ public class Room : MonoBehaviour
 
     public void HideRoom()
     {
-        // TODO
+        // TODO hide rooms
     }
 }
